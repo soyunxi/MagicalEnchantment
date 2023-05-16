@@ -1,0 +1,19 @@
+{
+  "enchantment.magicalenchantment.bloodymary" : "§4Bloody Mary",
+  "message.magicalenchantment.bloodymary" : "Stop cheating!!!",
+  "enchantment.magicalenchantment.bloodymary.desc" : "Deals extra damage based on the target's missing health",
+  "enchantment.magicalenchantment.bloodsacrifice" : "Blood Sacrifice",
+  "enchantment.magicalenchantment.bloodsacrifice.desc" : "When current health is less than 20%, each attack costs 0.5% of your health. When health is greater than 20%, deals 50% bonus damage for every 10% of maximum health, at the cost of your current health.",
+  "enchantment.magicalenchantment.souleater" : "§5Soul Eater",
+  "enchantment.magicalenchantment.souleater.desc" : "Each attack has a chance to permanently increase weapon damage by 1.",
+  "tooltip.magicalenchantment.sword.tooltip" : "§cYour weapon has successfully consumed a soul. You have consumed a total of §r§5%d§r§c souls.",
+  "tooltip.magicalenchantment.sworditem.tooltip" : "§cYour weapon has consumed a total of §r§5%d§r§c souls.",
+  "enchantment.magicalenchantment.roadofhell" : "Hades",
+  "enchantment.magicalenchantment.roadofhell.desc" : "Deals increased damage to undead creatures and sets them on fire.",
+  "enchantment.magicalenchantment.phoenixfeather" : "§6Phoenix Feather",
+  "enchantment.magicalenchantment.phoenixfeather.desc" : "Consumes 75% durability to prevent one death. Can only be used again if the item's durability is above 75%.",
+  "enchantment.magicalenchantment.cursedblade" : "Cursed Blade",
+  "enchantment.magicalenchantment.cursedblade.desc" : "Touch it and you die, but who dies is not certain.",
+  "enchantment.magicalenchantment.wisdom" : "§aWisdom",
+  "enchantment.magicalenchantment.wisdom.desc" : "Captain, isn't Delilah becoming more and more lovely?"
+}
