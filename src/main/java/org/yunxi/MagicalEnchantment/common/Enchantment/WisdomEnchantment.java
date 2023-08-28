@@ -31,5 +31,8 @@ public class WisdomEnchantment extends Enchantment {
         return true;
     }
 
-
+    @Override
+    public boolean canVillagerTrade() {
+        return false;
+    }
 }

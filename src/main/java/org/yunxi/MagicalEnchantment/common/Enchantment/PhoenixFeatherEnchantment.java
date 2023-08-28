@@ -14,11 +14,6 @@ public class PhoenixFeatherEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
     public int getMinEnchantability(int p_77321_1_) {
         return 2333;
     }
@@ -36,6 +31,11 @@ public class PhoenixFeatherEnchantment extends Enchantment {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
         return stack.getItem() instanceof ArmorItem && ((ArmorItem)stack.getItem()).getEquipmentSlot() == EquipmentSlotType.CHEST;
+    }
+
+    @Override
+    public boolean canVillagerTrade() {
+        return false;
     }
 
     @Override

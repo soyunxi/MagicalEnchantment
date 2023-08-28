@@ -7,11 +7,11 @@
   "enchantment.magicalenchantment.souleater" : "§5噬魂者",
   "enchantment.magicalenchantment.souleater.desc" : "每次攻击有一定几率永久增加武器1点伤害",
   "tooltip.magicalenchantment.sword.tooltip" : "§c您的武器成功吞噬了一个灵魂，当前已成功吞噬§r§5%d§r§c个灵魂",
-  "tooltip.magicalenchantment.sworditem.tooltip" : "§a %d 额外灵魂吞噬伤害",
+  "tooltip.magicalenchantment.sworditem.tooltip" : "§2 %d 额外伤害",
   "enchantment.magicalenchantment.roadofhell" : "黄泉",
   "enchantment.magicalenchantment.roadofhell.desc" : "对亡灵生物的伤害提高，并且会使亡灵生物着火",
   "enchantment.magicalenchantment.phoenixfeather" : "§6不死鸟之羽",
-  "enchantment.magicalenchantment.phoenixfeather.desc" : "消耗75%耐久免疫一次死亡，当装备耐久大于满耐久的75%事才可以再次使用",
+  "enchantment.magicalenchantment.phoenixfeather.desc" : "消耗75%耐久免疫一次死亡，当装备耐久大于满耐久的75%时才可以再次使用",
   "enchantment.magicalenchantment.cursedblade" : "诅咒之刃",
   "enchantment.magicalenchantment.cursedblade.desc" : "碰到就会死，但谁死就不一定了",
   "enchantment.magicalenchantment.wisdom" : "§a智慧",
@@ -25,5 +25,7 @@
   "enchantment.magicalenchantment.starryskyweapon" : "星辰",
   "enchantment.magicalenchantment.starryskyweapon.desc" : "可以附魔在武器上，附魔后的武器可以在共鸣祭坛上共鸣星座",
   "enchantment.magicalenchantment.starryskytool" : "星辰",
-  "enchantment.magicalenchantment.starryskytool.desc" : "可以附魔在工具上，附魔后的工具可以在共鸣祭坛上共鸣星座"
+  "enchantment.magicalenchantment.starryskytool.desc" : "可以附魔在工具上，附魔后的工具可以在共鸣祭坛上共鸣星座",
+  "enchantment.magicalenchantment.unbreakable" : "不毁",
+  "enchantment.magicalenchantment.unbreakable.desc" : "亘古永恒"
 }

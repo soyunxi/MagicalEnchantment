@@ -37,4 +37,7 @@ public class EnchantmentInit {
 
     public static final RegistryObject<Enchantment> SoulBinding =
             ENCHANTMENTS.register("soulbinding", SoulBindingEnchantment::new);
+
+    public static final RegistryObject<Enchantment> Unbreakable =
+            ENCHANTMENTS.register("unbreakable", UnbreakableEnchantment::new);
 }

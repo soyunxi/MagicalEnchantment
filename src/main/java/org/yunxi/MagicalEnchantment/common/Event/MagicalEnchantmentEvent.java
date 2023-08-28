@@ -1,36 +1,34 @@
 package org.yunxi.MagicalEnchantment.common.Event;
 
-import javafx.scene.control.Tooltip;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tileentity.EnchantingTableTileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.structure.StrongholdPieces;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.enchanting.EnchantmentLevelSetEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.*;
+import net.minecraftforge.event.entity.player.AnvilRepairEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.yunxi.MagicalEnchantment.MagicalEnchantment;
@@ -39,7 +37,7 @@ import org.yunxi.MagicalEnchantment.common.EnchantmentInit;
 import java.util.*;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class EnchantmentEvent {
+public class MagicalEnchantmentEvent {
 
     private static final Map<UUID, Map<Integer, ItemStack>> SoulBindingMap = new HashMap<>();
 
@@ -216,6 +214,14 @@ public class EnchantmentEvent {
                 PlayerEntity player = (PlayerEntity) entity;
                 //黑洞边缘
                 if (EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BlackHoleEdge.get(), player.getHeldItemMainhand()) > 0) {
+                    // 获取玩家的位置
+                    BlockPos playerPos = arrow.getPosition();
+                    // 获取以玩家为圆心半径16范围内的所有生物
+                    List<Entity> entities = arrow.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(playerPos.add(-16, -16, -16).add(16, 16, 16)));
+                    // 找到距离玩家最近的生物
+                    Entity closestEntity = entities.stream()
+                            .min(Comparator.comparingDouble(e -> e.getDistance(arrow)))
+                            .orElse(null);
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
@@ -259,6 +265,16 @@ public class EnchantmentEvent {
                 player.inventory.setInventorySlotContents(Entry.getKey(), Entry.getValue());
             }
             SoulBindingMap.remove(player.getUniqueID());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRn(PlayerEvent.ItemPickupEvent event) {
+        ItemStack stack = event.getStack();
+        if (EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.Unbreakable.get(), stack) > 0) {
+            CompoundNBT display = stack.getOrCreateChildTag("display");
+            display.putByte("Unbreakable", (byte) 1);
+            display.putInt("HideFlags", 4);
         }
     }
 }
