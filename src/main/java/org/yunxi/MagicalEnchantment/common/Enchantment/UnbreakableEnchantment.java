@@ -2,12 +2,7 @@ package org.yunxi.MagicalEnchantment.common.Enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
-
-import java.util.Map;
 
 public class UnbreakableEnchantment extends Enchantment {
     public UnbreakableEnchantment() {
@@ -40,4 +35,6 @@ public class UnbreakableEnchantment extends Enchantment {
     public boolean canGenerateInLoot() {
         return false;
     }
+
+
 }

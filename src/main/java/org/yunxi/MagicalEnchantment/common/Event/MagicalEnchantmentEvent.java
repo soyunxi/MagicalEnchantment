@@ -7,25 +7,17 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.EnchantingTableTileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.enchanting.EnchantmentLevelSetEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -59,7 +51,6 @@ public class MagicalEnchantmentEvent {
         //噬魂者
         if (source instanceof PlayerEntity){
             PlayerEntity player = (PlayerEntity) source;
-            Random random = new Random();
             ItemStack heldItem = player.getHeldItemMainhand();
             int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.SoulEater.get(), heldItem);
             if (level >= 1) {
@@ -156,8 +147,8 @@ public class MagicalEnchantmentEvent {
                 }
             }
         }
-        if (source instanceof ServerPlayerEntity){
-            ServerPlayerEntity player = (ServerPlayerEntity) source;
+        if (source instanceof PlayerEntity){
+            PlayerEntity player = (PlayerEntity) source;
             Random random = new Random();
             ItemStack heldItem = player.getHeldItemMainhand();
             int level = EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.SoulEater.get(), heldItem);
@@ -206,41 +197,6 @@ public class MagicalEnchantmentEvent {
     }
 
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof ArrowEntity) {
-            ArrowEntity arrow = (ArrowEntity) event.getEntity();
-            Entity entity = arrow.getShooter();
-            if (entity instanceof PlayerEntity) {
-                PlayerEntity player = (PlayerEntity) entity;
-                //黑洞边缘
-                if (EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.BlackHoleEdge.get(), player.getHeldItemMainhand()) > 0) {
-                    // 获取玩家的位置
-                    BlockPos playerPos = arrow.getPosition();
-                    // 获取以玩家为圆心半径16范围内的所有生物
-                    List<Entity> entities = arrow.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(playerPos.add(-16, -16, -16).add(16, 16, 16)));
-                    // 找到距离玩家最近的生物
-                    Entity closestEntity = entities.stream()
-                            .min(Comparator.comparingDouble(e -> e.getDistance(arrow)))
-                            .orElse(null);
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            arrow.setMotion(arrow.getMotion().mul(2, 2, 2));
-                        }
-                    }, 50, 50);
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            arrow.remove();
-                        }
-                    }, 15000);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
         PlayerEntity player = event.getPlayer();
         ItemStack ItemStack = player.getHeldItemMainhand();
@@ -269,12 +225,19 @@ public class MagicalEnchantmentEvent {
     }
 
     @SubscribeEvent
-    public static void onPlayerRn(PlayerEvent.ItemPickupEvent event) {
-        ItemStack stack = event.getStack();
-        if (EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.Unbreakable.get(), stack) > 0) {
-            CompoundNBT display = stack.getOrCreateChildTag("display");
-            display.putByte("Unbreakable", (byte) 1);
-            display.putInt("HideFlags", 4);
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return; // 只在玩家的结束阶段处理事件
+        // 获取玩家
+        PlayerEntity player = event.player;
+        // 遍历玩家的物品栏
+        for (ItemStack stack : player.inventory.mainInventory) {
+            if (!stack.isEmpty() && stack.isDamaged()) { // 检查物品是否存在
+                int currentDurability = stack.getMaxDamage() - stack.getDamage(); // 计算当前耐久
+                int maxDurability = stack.getMaxDamage(); // 获取最大耐久
+                if (EnchantmentHelper.getEnchantmentLevel(EnchantmentInit.Unbreakable.get(), stack) > 0) {
+                    stack.setDamage(0);
+                }
+            }
         }
     }
 }
